@@ -35,6 +35,7 @@ rootpw --iscrypted !!
 firewall --disabled
 
 # We pass net.ifnames=0 because we always want to use eth0 here on all the cloud images.
+# pass no_timer_check to enable nested virtualization: https://bugzilla.redhat.com/show_bug.cgi?id=1144155
 bootloader --timeout=1 --append="no_timer_check net.ifnames=0 console=tty1 console=ttyS0,115200n8"
 
 network --bootproto=dhcp --device=link --activate --onboot=on
