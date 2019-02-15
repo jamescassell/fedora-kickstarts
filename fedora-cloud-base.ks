@@ -243,14 +243,13 @@ rm -f /etc/sysconfig/network-scripts/ifcfg-en*
 /sbin/chkconfig network on
 
 # Remove machine-id on pre generated images
-rm -f /etc/machine-id
-touch /etc/machine-id
+truncate -c -s 0 /etc/machine-id
 
 # Anaconda is writing an /etc/resolv.conf from the install environment.
 # The system should start out with an empty file, otherwise cloud-init
 # will try to use this information and may error:
 # https://bugs.launchpad.net/cloud-init/+bug/1670052
-truncate -s 0 /etc/resolv.conf
+truncate -c -s 0 /etc/resolv.conf
 
 %end
 
