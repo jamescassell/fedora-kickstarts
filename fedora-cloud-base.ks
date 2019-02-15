@@ -29,7 +29,6 @@ lang en_US.UTF-8
 keyboard us
 timezone --utc Etc/UTC
 
-auth --useshadow --passalgo=sha512
 selinux --enforcing
 rootpw --iscrypted !!
 
@@ -71,6 +70,7 @@ which
 -dracut-config-rescue
 
 # Some things from @core we can do without in a minimal install
+-authconfig
 -biosdevname
 # Need to also add back plymouth in order to mask failure of
 # systemd-vconsole-setup.service. BZ#1272684. Comment out for now
@@ -135,11 +135,6 @@ echo "Removing firewalld."
 # firewall should _not_ pull in this package.
 # yum -C -y remove "firewalld*" --setopt="clean_requirements_on_remove=1"
 dnf -C -y erase "firewalld*"
-
-# Another one needed at install time but not after that, and it pulls
-# in some unneeded deps (like, newt and slang)
-echo "Removing authconfig."
-dnf -C -y erase authconfig
 
 # instlang hack. (Note! See bug referenced above package list)
 find /usr/share/locale -mindepth  1 -maxdepth 1 -type d -not -name en_US -exec rm -rf {} +
