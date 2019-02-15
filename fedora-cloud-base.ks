@@ -225,12 +225,6 @@ touch /var/log/boot.log
 # that don't support selinux will give us errors
 /usr/sbin/fixfiles -R -a restore || true
 
-echo "Zeroing out empty space."
-# This forces the filesystem to reclaim space from deleted files
-dd bs=1M if=/dev/zero of=/var/tmp/zeros || :
-rm -f /var/tmp/zeros
-echo "(Don't worry -- that out-of-space error was expected.)"
-
 # When we build the image with oz, dracut is used
 # and sets up a ifcfg-en<whatever> for the device. We don't
 # want to use this, we use eth0 so it is always the same.
@@ -250,6 +244,12 @@ truncate -c -s 0 /etc/machine-id
 # will try to use this information and may error:
 # https://bugs.launchpad.net/cloud-init/+bug/1670052
 truncate -c -s 0 /etc/resolv.conf
+
+echo "Zeroing out empty space."
+# This forces the filesystem to reclaim space from deleted files
+dd bs=1M if=/dev/zero of=/var/tmp/zeros || :
+rm -f /var/tmp/zeros
+echo "(Don't worry -- that out-of-space error was expected.)"
 
 %end
 
